@@ -18,46 +18,35 @@ function iso8601TimeToHMS(s) {
 
 $(document).ready(function(){
 
-    // TITLE OF THE MOVIE IN ORIGINAL LANGUAGE
-    // removes all from the creation year to the end
-    var title = $(document).attr('title');
-    title = title.slice(0, title.indexOf('|') - 8 - title.length);
+    // first, get some important data from imdb api: original title, IMDB rating
+    var title = "";
+    var imdbRating = "N/A";
 
-    // removes all before '/'
-    if (title.indexOf('/') !== -1) {
-        title = title.substring(title.indexOf("/") + 2);
+    // find a link to the IMDB profile
+    var imdb_link = $("img.imdb").parent().attr('href');
+    if (imdb_link) {
+        var imdb_id = imdb_link.split('/');
+        if (imdb_id[imdb_id.length - 1] == "" || "combined" == imdb_id[imdb_id.length - 1]) {
+            imdb_id = imdb_id[imdb_id.length - 2];
+        } else {
+            imdb_id = imdb_id[imdb_id.length - 1];
+        }
+        var api_url = "http://www.imdbapi.com/?i=" + imdb_id;
     }
-
-    // removes type of the work
-    var extraWords = ["(video film)", "(TV film)", "(TV seriál)", "(TV pořad)", "(divadelní záznam)", "(koncert)", "(studentský film)", "(amatérský film)", "(hudební videoklip)"]
-
-    for (var i = 0; i < extraWords.length; ++i) {
-        title = title.replace(extraWords[i], '');
-        title = title.trim();
-    }
-
-    // moves The/Der/Die/Das/Los/Las/El/La/An/A at the beggining of the title
-    var compRaw = "";
-    var comp = "";
-
-    // A
-    if (title.substr(-3) == ", A") {
-        title = "A " + title.slice(0, -3);
-    }
-    
-    // An, El, La
-    compRaw = title.substr(-2);
-    comp = title.substr(-4);
-    if (comp == ", An" || comp == ", El" || comp == ", La") {
-        title = compRaw + " " + title.slice(0, -4);
-    }
-
-    // The, Der, Die, Das, Los, Las
-    compRaw = title.substr(-3);
-    comp = title.substr(-5);
-    if (comp == ", The" || comp == ", Der" || comp == ", Die" || comp == ", Das" || comp == ", Los" || comp == ", Las") {
-        title = compRaw + " " + title.slice(0, -5);
-    }
+        
+    // get data
+    var json = (function () {
+        $.ajax({
+            'async': false,     // pointless to use asynchronous call, since title and imdbRating are used in every feature
+            'global': false,
+            'url': api_url,
+            'dataType': "json",
+            'success': function (data) {
+                title = data.Title;
+                imdbRating = data.imdbRating;
+            }
+        });
+    })();
 
     // FEATURES
     try {
@@ -77,34 +66,7 @@ $(document).ready(function(){
 
             // IMDB RATING
             if (valImdb == "1" || valImdb == null) {
-                // reserve space between CSFD rating and user rating
-                $("#rating").after('<div id="imdb_rating">N/A</div>');
-
-                // find a link to the IMDB profile
-        		var imdb_link = $("img.imdb").parent().attr('href');
-        		if (imdb_link) {
-        			var imdb_id = imdb_link.split('/');
-        			if (imdb_id[imdb_id.length - 1] == "" || "combined" == imdb_id[imdb_id.length - 1]) {
-        				imdb_id = imdb_id[imdb_id.length - 2];
-        			} else {
-        				imdb_id = imdb_id[imdb_id.length - 1];
-        			}
-        			var api_url = "http://www.imdbapi.com/?i=" + imdb_id;
-        		}
-        			
-                // get data
-        		var json = (function () {
-        			$.ajax({
-        				'async': true,
-        				'global': false,
-        				'url': api_url,
-        				'dataType': "json",
-        				'success': function (data) {
-                            $("#imdb_rating").html('<a href="' + imdb_link + '">' + data.imdbRating + '</a>');
-        				}
-        			});
-        		})();
-                
+                $("#rating").after('<div id="imdb_rating"><a href="' + imdb_link + '">' + imdbRating + '</a></div>');
             }    
             
             // YOUTUBE TRAILER
