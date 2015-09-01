@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>CSFD Vyhľadávanie</title>
+    <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="all">
+        <div class="options-left">
+            <h1>CSFD Vyhľadávanie & rozšírenia</h1>
+            <h2>Nastavenia</h2>
+            <div class="bottom">
+                © Tomáš Smetanka <br>
+                CSFD: <a href="http://www.csfd.cz/uzivatel/243918-tomizzi/" target="_blank">Tomizzi</a> <br>
+                <a href="http://smetanka.net" target="_blank">smetanka.net</a> <br>
+                <a href="https://chrome.google.com/webstore/support/ookhejngpnlkejplknjeligcfnegimip?hl=cs&gl=001" target="_blank">Odoslať spätnú väzbu</a>
+            </div>
+        </div>
+        <div class="options-right">
+            <table border="0" width="90%">
+                <tr>
+                    <td>Jazyk rozšírenia</td>
+                    <td>
+                        <select id="jazyk">
+                            <option value="0">Slovenský</option>
+                            <option value="1">Český</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Zobrazovať IMDB hodnotenie</td>
+                    <td>
+                        <select id="imdbRating">
+                            <option value="1">Áno</option>
+                            <option value="0">Nie</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Zobrazovať YouTube HD trailer medzi videami</td>
+                    <td>
+                        <select id="youtubeTrailer">
+                            <option value="1">Áno</option>
+                            <option value="0">Nie</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Zobrazovať vyhľadávanie torrentov medzi odkazmi</td>
+                    <td>
+                        <select id="torrentSearch">
+                            <option value="1">Áno</option>
+                            <option value="0">Nie</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Zobrazovať vyhľadávanie titulkov medzi odkazmi</td>
+                    <td>
+                        <select id="subtitleSearch">
+                            <option value="1">Áno</option>
+                            <option value="0">Nie</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Zobrazovať odkaz na prechod na vrch stránky</td>
+                    <td>
+                        <select id="goUp">
+                            <option value="1">Áno</option>
+                            <option value="0">Nie</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Zobrazovať odkaz na CSFD na stránkach IMDB</td>
+                    <td>
+                        <select id="csfdLink">
+                            <option value="1">Áno</option>
+                            <option value="0">Nie</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Zobrazovať tooltip po prechode nad odkaz tvorcu</td>
+                    <td>
+                        <select id="artistTooltip">
+                            <option value="1">Áno</option>
+                            <option value="0">Nie</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Zobrazovať tooltip po prechode nad odkaz filmu</td>
+                    <td>
+                        <select id="movieTooltip">
+                            <option value="1">Áno</option>
+                            <option value="0">Nie</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span id="status"></span></td>
+                    <td><button id="submitButton">Uložiť</button></td>
+                </tr>
+            </table>
+
+            <script type="text/javascript" src="options.js"></script>
+        </div>
+    </div>
+    </body>
+</html>
