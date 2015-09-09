@@ -10,15 +10,9 @@ $(document).ready(function(){
             
             // CSFD LINK
             if (valCsfd == "1" || valCsfd == null) {
-                var name = $("title").text();
-                if (name.indexOf('TV Series') >= 0) {
-                    name = name.slice(0, -29);
-                } else {
-                    name = name.slice(0, -14);
-                }
+                var name = $(".header span:first-child").text();
                 $("#maindetails_quicklinks").after('<a href="http://www.csfd.cz/hledat/?q=' + name + '">CSFD</a>');
             }
-            
 
         });
         

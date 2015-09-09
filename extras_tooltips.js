@@ -36,11 +36,8 @@ $(document).ready(function(){
                         var filmography = "";
                         for (var i = 0; i < 3; i++) {
                             filmography += $(data).find('#filmography .content tr').get(i).outerHTML;
-                            if (i < 2) {
-                                filmography += "<br>";
-                            }
                         }
-                        content = content.replace('</ul>', '</ul><br>' + filmography);
+                        content = content.replace('</ul>', '</ul><br><table>' + filmography + '</table>');
                         $('<div class="artist-tooltip">' + content + '</div>').appendTo('body').fadeIn('fast');
                         $('div.artist-tooltip').css({
                             'top': e.pageY - ($('div.artist-tooltip').height() / 2) - 5,
@@ -99,6 +96,7 @@ $(document).ready(function(){
                 $('a[href^="/film/"], [href^="http://www.csfd.cz/film/"]')
                     .not('a[href*="/videa/"]')
                     .not('a[href*="/bazar/"]')
+                    .not('a[href*="/oceneni/"]')
                     .not('a[href*="/zajimavosti/"]')
                     .not('a[href*="/recenze/"]')
                     .not('a[href*="/galerie/"]')

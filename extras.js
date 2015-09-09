@@ -18,7 +18,7 @@ function iso8601TimeToHMS(s) {
 
 $(document).ready(function(){
 
-    // first, get some important data from imdb api: original title, IMDB rating
+    // first, get some important data from themoviedb.org API: original title, IMDB rating
     var title = "";
     var imdbRating = "N/A";
 
@@ -31,7 +31,19 @@ $(document).ready(function(){
         } else {
             imdb_id = imdb_id[imdb_id.length - 1];
         }
-        var api_url = "http://www.imdbapi.com/?i=" + imdb_id;
+
+        // themoviedb.org
+        // http://api.themoviedb.org/3/find/tt0773262?external_source=imdb_id&api_key=2fd2f1d983ad66d58e3f243a06d33c52
+        // http://api.themoviedb.org/3/tv/1405?api_key=2fd2f1d983ad66d58e3f243a06d33c52
+        // vždy 2 volania!
+        // obsahuje END_YEAR
+        // 
+        // trakt.tv
+        // https://api-v2launch.trakt.tv/shows/tt0773262?extended=full
+        // https://api-v2launch.trakt.tv/movies/tt1392190?extended=full
+
+        var api_key = "582BD8F699A9666AF3B8431E5B624";
+        var api_url = "http://imdbapi.tomizzi.com/api.php?id=" + imdb_id + "&api_key=" + api_key;
     }
         
     // get data
@@ -43,7 +55,7 @@ $(document).ready(function(){
             'dataType': "json",
             'success': function (data) {
                 title = data.Title;
-                imdbRating = data.imdbRating;
+                imdbRating = data.Rating;
             }
         });
     })();

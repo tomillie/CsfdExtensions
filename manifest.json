@@ -2,7 +2,7 @@
     "name": "CSFD Vyhľadávanie & Rozšírenia",
     "description": "Vyhľadávanie filmov, seriálov, tvorcov v databáze CSFD. A rôzne rozšírenia CSFD stránky.",
     "manifest_version": 2,  
-    "version": "5.3",
+    "version": "6.0",
     "icons": { 
         "128": "icon_128.png" 
     },
