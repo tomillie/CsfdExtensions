@@ -16,9 +16,6 @@ document.querySelector('#submitButton').addEventListener('click', save_options);
 
 // uloženie do LocalStorage
 function save_options() {
-    var select = document.getElementById("jazyk");
-    var lang = select.children[select.selectedIndex].value;
-    chrome.storage.local.set({"jazyk_nastavenia" : lang});
 
     var select1 = document.getElementById("imdbRating");
     var val1 = select1.children[select1.selectedIndex].value;
@@ -69,24 +66,10 @@ function restore_options() {
     keys[3] = "subtitleSearch";
     keys[4] = "goUp";
     keys[5] = "csfdLink";
-    keys[6] = "jazyk_nastavenia";
-    keys[7] = "artistTooltip";
-    keys[8] = "movieTooltip";
+    keys[6] = "artistTooltip";
+    keys[7] = "movieTooltip";
 
     chrome.storage.local.get(keys, function (result) {
-        var lang = result.jazyk_nastavenia;
-        if (!lang) {
-            return;
-        }
-        var select = document.getElementById("jazyk");
-        for (var i = 0; i < select.children.length; i++) {
-            var child = select.children[i];
-            if (child.value == lang) {
-                child.selected = "true";
-                break;
-            }
-        }
-
         var val = result.imdbRating;
         if (!val) {
             return;

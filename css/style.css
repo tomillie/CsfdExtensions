@@ -25,7 +25,7 @@
 }
 
 input[type="text"] {
-    background: url(img/csfd.png) no-repeat 5px #FCFCFC;
+    background: url("../img/csfd.png") no-repeat 5px #FCFCFC;
     border: 1px solid #bfb6b6;
     color: #bfb6b6;
     height: 25px;
@@ -35,7 +35,7 @@ input[type="text"] {
 }
 
 input[type="text"]:focus {
-    background: url(img/csfd.png) no-repeat 5px #FCFCFC;
+    background: url("../img/csfd.png") no-repeat 5px #FCFCFC;
     border-color: #A6A6A6;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.3) inset;
     color: #6C6C6C;
@@ -109,10 +109,10 @@ input[type="text"]:focus {
 }
 
 .options-right select {
-     border: 1px solid silver; 
-     padding: 4px; 
-     background-color: #FFFFFF; 
-     color: #000000;
+   border: 1px solid silver; 
+   padding: 4px; 
+   background-color: #FFFFFF; 
+   color: #000000;
 }
 
 #status {
@@ -190,7 +190,7 @@ div#rating {
 .go_up:hover {
     opacity: 1;
 }
- 
+
 /* artist tooltip */
 .artist-tooltip {
     position: absolute;
@@ -261,7 +261,7 @@ div#rating {
 .artist-tooltip .clear {
     clear: both;
 }
- 
+
 /* movie tooltip */
 .movie-tooltip {
     position: absolute;

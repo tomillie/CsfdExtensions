@@ -1,0 +1,6 @@
+{
+	"button_search": {
+		"message": "Hledej",
+		"description": "Label for main search button in popup.html."
+	}
+}
