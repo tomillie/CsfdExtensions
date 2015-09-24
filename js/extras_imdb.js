@@ -6,12 +6,46 @@ $(document).ready(function(){
         keys[0] = "csfdLink";
         
         chrome.storage.local.get(keys, function (result) {
-            valCsfd = result.csfdLink;
+            var valCsfd = result.csfdLink;
             
             // CSFD LINK
             if (valCsfd == "1" || valCsfd == null) {
-                var name = $(".header span:first-child").text();
-                $("#maindetails_quicklinks").after('<a href="http://www.csfd.cz/hledat/?q=' + name + '">CSFD</a>');
+
+                var current_url = window.location.href;
+                var profile_type = "";
+                var imdb_id = "";
+                var csfd_url = "";
+
+                if (current_url.indexOf("/title/") >= 0) {
+                    profile_type = "film";
+                    imdb_id = current_url.substring(26, 35);
+                } else if (current_url.indexOf("/name/") >= 0) {
+                    profile_type = "creator";
+                    imdb_id = current_url.substring(25, 34);
+                }
+
+                if (profile_type != "") {
+                    var api_url = "https://api.csfd.cz/imdb/" + profile_type + "/?id=" + imdb_id;
+
+                    var json = (function () {
+                        $.ajax({
+                            'async': false,
+                            'global': false,
+                            'url': api_url,
+                            'dataType': "json",
+                            'success': function (data) {
+                                if (profile_type == "film") {
+                                    csfd_url = data.film.web_url;
+                                } else {
+                                    csfd_url = data.creator.web_url;
+                                }
+                            }
+                        });
+                    })();
+
+                    $("#maindetails_quicklinks").after('<a href="' + csfd_url + '">CSFD</a>');
+                }
+
             }
 
         });
