@@ -1,26 +1,12 @@
-// converts youtube's ISO8601 time into readable format minutes:seconds
-function iso8601TimeToHMS(s) {
 
-    var reptms = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/;
-    var hours = 0, minutes = 1, seconds = 0;
-
-    if (reptms.test(s)) {
-        var matches = reptms.exec(s);
-        if (matches[1]) hours = Number(matches[1]);
-        if (matches[2]) minutes = Number(matches[2]);
-        if (matches[3]) seconds = Number(matches[3]);
-    }
-
-    minutes = minutes + (hours * 60);
-
-    return (minutes < 10 ? '0' + minutes : minutes) + ":" + (seconds < 10 ? '0' + seconds : seconds);
-}
 
 $(document).ready(function(){
 
-    // first, get some important data from themoviedb.org API: original title, IMDB rating
+    // first, get some data from the API
     var title = "";
-    var imdbRating = "N/A";
+    var imdbRating = "";
+    var yearEnd = "";
+    var language = "";
 
     // find a link to the IMDB profile
     var imdb_link = $("img.imdb").parent().attr('href');
@@ -32,16 +18,6 @@ $(document).ready(function(){
             imdb_id = imdb_id[imdb_id.length - 1];
         }
 
-        // themoviedb.org
-        // http://api.themoviedb.org/3/find/tt0773262?external_source=imdb_id&api_key=2fd2f1d983ad66d58e3f243a06d33c52
-        // http://api.themoviedb.org/3/tv/1405?api_key=2fd2f1d983ad66d58e3f243a06d33c52
-        // vždy 2 volania!
-        // obsahuje END_YEAR
-        // 
-        // trakt.tv
-        // https://api-v2launch.trakt.tv/shows/tt0773262?extended=full
-        // https://api-v2launch.trakt.tv/movies/tt1392190?extended=full
-
         var api_key = "582BD8F699A9666AF3B8431E5B624";
         var api_url = "http://imdbapi.tomizzi.com/api.php?id=" + imdb_id + "&api_key=" + api_key;
     }
@@ -49,13 +25,15 @@ $(document).ready(function(){
     // get data
     var json = (function () {
         $.ajax({
-            'async': false,     // pointless to use asynchronous call, since title and imdbRating are used in every feature
+            'async': false,     // pointless to use asynchronous call, since title is used in almost every feature
             'global': false,
             'url': api_url,
             'dataType': "json",
             'success': function (data) {
                 title = data.Title;
-                imdbRating = data.Rating;
+                data.Rating ? imdbRating = data.Rating : imdbRating = "N/A";
+                yearEnd = data.YearEnd;
+                language = data.Language;
             }
         });
     })();
@@ -68,6 +46,8 @@ $(document).ready(function(){
         keys[2] = "torrentSearch";
         keys[3] = "subtitleSearch";
         keys[4] = "goUp";
+        keys[5] = "tvSerieEnding";
+        keys[6] = "originalLanguage";
         
         chrome.storage.local.get(keys, function (result) {
             valImdb = result.imdbRating;
@@ -75,10 +55,27 @@ $(document).ready(function(){
             valTorrent = result.torrentSearch; 
             valSubtitle = result.subtitleSearch; 
             valGoUp = result.goUp; 
+            valTvSerieEnding = result.tvSerieEnding; 
+            valOriginalLanguage = result.originalLanguage; 
 
             // IMDB RATING
             if (valImdb == "1" || valImdb == null) {
                 $("#rating").after('<div id="imdb_rating"><a href="' + imdb_link + '">' + imdbRating + '</a></div>');
+            } 
+
+            // ORIGINAL LANGUAGE
+            if ((valOriginalLanguage == "1" || valOriginalLanguage == null) && language) {
+                language = transalteOriginalLanguage(language);
+                language = language.replace(/\|/g, ", ");
+                $(".genre").after('<p>Jazyk originálu: ' + language + '</p>');
+            }   
+
+            // END YEAR
+            if ((valTvSerieEnding == "1" || valTvSerieEnding == null) && yearEnd) {
+                var origin = $(".origin").text();
+                var yearStart = origin.match(/\d{4}/g);
+                origin = origin.replace(/\d{4}/g, yearStart[0] + "-" + yearEnd);
+                $(".origin").text(origin);
             }    
             
             // YOUTUBE TRAILER
