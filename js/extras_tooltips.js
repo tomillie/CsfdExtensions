@@ -102,7 +102,7 @@ $(document).ready(function(){
                     .not('a[href*="/galerie/"]')
                     .not('a[href*="/filmoteka/"]')
                     .not('a[href*="/komentare/"]')
-                    .not('a[href$="/diskuze/"]')
+                    .not('a[href*="/diskuze/"]')
                     .not('a[href$="/prehled/"]')
                     .attr('rel', 'movie-info');
             }

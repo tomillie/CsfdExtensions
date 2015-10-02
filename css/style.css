@@ -43,76 +43,66 @@ input[type="text"]:focus {
 }
 
 /* Options page styles */
-.all {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0px;
-    bottom: 0px;
+body.options-page {
+    background-color: #f8f3f3;
     font-family: Century Gothic, sans-serif;
 }
 
-.options-left {
-    position: absolute;
-    width: 30%;
+.content-left {
+    position: fixed;
+    width: 35%;
     height: 100%;
+    left: 0;
+    top: 0;
+    padding-right: 3%;
+    padding-left: 2%;
+    text-align: right;
     background: #ebe8e8;
     border-right: 1px solid #b4adad;
-    text-align: right;
-    padding-top: 5px;
-    padding-right: 30px;
     color: #b10b0b;
 }
 
-.options-left h1 {
+.content-left h1 {
     font-size: 30px;
     font-weight: bold;
     padding-bottom: 20px;
 }
 
-.options-left h2 {
+.content-left h2 {
     font-size: 20px;
 }
 
-.options-left .bottom {
+.content-left .bottom {
+    position: absolute;
+    height: 100px;
+    right: 8%;
+    bottom: 0;
     font-size: 12px;
-    padding-top: 90%;
-    height: 100%;
 }
 
-.options-left a {
+.content-left a {
     color: #880404;
     text-decoration: underline;
 }
 
-.options-left a:hover {
+.content-left a:hover {
     text-decoration: none;
 }
 
-.options-right {
-    float: right;
-    width: 65%;
-    height: 100%;
-    background: #f8f3f3;
-    text-align: left;
-    padding-top: 137px;
-    padding-left: 30px;
+.content-right {
+    width: 55%;
+    padding-top: 5%;
+    padding-bottom: 2%;
+    margin-left: 45%;
     color: #333333;
 }
 
-.options-right table {
-    font-size: 14px
+.content-right table {
+    width: 90%;
 }
 
-.options-right table td {
+.content-right table td {
     padding-bottom: 7px;
-}
-
-.options-right select {
-   border: 1px solid silver; 
-   padding: 4px; 
-   background-color: #FFFFFF; 
-   color: #000000;
 }
 
 #status {
@@ -189,6 +179,31 @@ div#rating {
 
 .go_up:hover {
     opacity: 1;
+}
+
+.hcenter {
+    display: block;
+    text-align: center;
+}
+
+#eph4 {
+    background: #EEE;
+}
+
+.epTable {
+    width: 100%;
+    border-spacing: inherit;
+}
+
+.epTable td {
+    width: 50%;
+    vertical-align: top;
+    padding: 10px;
+    border-bottom: 1px dashed #B7B7B7;
+}
+
+.epTable td:nth-child(even) {
+    border-left: 1px dashed #B7B7B7;
 }
 
 /* artist tooltip */

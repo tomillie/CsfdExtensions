@@ -1,6 +1,6 @@
 {
-    "name": "CSFD Vyhľadávanie & Rozšírenia",
-    "description": "Vyhľadávanie filmov, seriálov, tvorcov v databáze CSFD. A rôzne rozšírenia CSFD stránky.",
+    "name": "__MSG_ext_name__",
+    "description": "__MSG_ext_desc__",
     "manifest_version": 2,  
     "version": "6.0",
     "icons": { 
@@ -8,7 +8,7 @@
     },
     "options_page": "options.html", 
     "minimum_chrome_version": "10",
-    "default_locale": "en",
+    "default_locale": "cs",
     "background": {
         "page": "popup.html"
     },
@@ -20,7 +20,7 @@
     "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
     "content_scripts": [ {
         "css": [ "css/style.css" ],
-        "js": [ "js/jquery.js", "js/extras.js", "js/helper.js" ],
+        "js": [ "js/jquery.js", "js/extras.js", "js/extras_episodes.js", "js/helper.js" ],
         "matches": [ "http://www.csfd.cz/film/*", "https://www.csfd.cz/film/*" ]
    },
     {

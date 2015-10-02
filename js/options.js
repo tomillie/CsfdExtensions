@@ -1,14 +1,17 @@
 // all possible settings and its keys
 var settings = ["imdbRating",
-               "tvSerieEnding",
-               "originalLanguage",
-               "youtubeTrailer",
-               "torrentSearch",
-               "subtitleSearch",
-               "goUp",
-               "csfdLink",
-               "artistTooltip",
-               "movieTooltip"];
+                "favUsersRating",
+                "tvSerieEnding",
+                "originalLanguage",
+                "youtubeTrailer",
+                "torrentSearch",
+                "subtitleSearch",
+                "episodes",
+                "goUp",
+                "csfdLink",
+                "artistTooltip",
+                "movieTooltip",
+                "exportUserData"];
 
 // spusti restore_option() pred nacitanim stranky
 document.addEventListener('DOMContentLoaded', restore_options);
@@ -33,7 +36,7 @@ function save_options() {
 
     // update status to let user know options were saved
     var status = document.getElementById("status");
-    status.innerHTML = "Nastavenia \u00fape\u0161ne zmenen\u00e9.";
+    status.innerHTML = chrome.i18n.getMessage("opt_saved");
     setTimeout(function() {
         status.innerHTML = "";
     }, 10000);

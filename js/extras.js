@@ -1,66 +1,109 @@
+$(document).ready(function() {
 
-
-$(document).ready(function(){
-
-    // first, get some data from the API
-    var title = "";
-    var imdbRating = "";
-    var yearEnd = "";
-    var language = "";
-
-    // find a link to the IMDB profile
-    var imdb_link = $("img.imdb").parent().attr('href');
-    if (imdb_link) {
-        var imdb_id = imdb_link.split('/');
-        if (imdb_id[imdb_id.length - 1] == "" || "combined" == imdb_id[imdb_id.length - 1]) {
-            imdb_id = imdb_id[imdb_id.length - 2];
-        } else {
-            imdb_id = imdb_id[imdb_id.length - 1];
-        }
-
-        var api_key = "582BD8F699A9666AF3B8431E5B624";
-        var api_url = "http://imdbapi.tomizzi.com/api.php?id=" + imdb_id + "&api_key=" + api_key;
-    }
-        
-    // get data
-    var json = (function () {
-        $.ajax({
-            'async': false,     // pointless to use asynchronous call, since title is used in almost every feature
-            'global': false,
-            'url': api_url,
-            'dataType': "json",
-            'success': function (data) {
-                title = data.Title;
-                data.Rating ? imdbRating = data.Rating : imdbRating = "N/A";
-                yearEnd = data.YearEnd;
-                language = data.Language;
-            }
-        });
-    })();
-
-    // FEATURES
     try {
         var keys = new Array();
         keys[0] = "imdbRating";
-        keys[1] = "youtubeTrailer";
-        keys[2] = "torrentSearch";
-        keys[3] = "subtitleSearch";
-        keys[4] = "goUp";
-        keys[5] = "tvSerieEnding";
-        keys[6] = "originalLanguage";
+        keys[1] = "favUsersRating";
+        keys[2] = "youtubeTrailer";
+        keys[3] = "episodes";
+        keys[4] = "torrentSearch";
+        keys[5] = "subtitleSearch";
+        keys[6] = "goUp";
+        keys[7] = "tvSerieEnding";
+        keys[8] = "originalLanguage";
+        keys[9] = "exportUserData";
         
         chrome.storage.local.get(keys, function (result) {
             valImdb = result.imdbRating;
+            valFavUsersRating = result.favUsersRating;
             valYoutube = result.youtubeTrailer; 
+            valEpisodes = result.episodes; 
             valTorrent = result.torrentSearch; 
             valSubtitle = result.subtitleSearch; 
             valGoUp = result.goUp; 
             valTvSerieEnding = result.tvSerieEnding; 
             valOriginalLanguage = result.originalLanguage; 
+            valExportUserData = result.exportUserData; 
+
+
+            if (valImdb == 1 || valImdb == null ||
+                valYoutube == 1 || valYoutube == null || 
+                valSubtitle == 1 || valSubtitle == null || 
+                valTorrent == 1 || valTorrent == null || 
+                valEpisodes == 1 || valEpisodes == null || 
+                valTvSerieEnding == 1 || valTvSerieEnding == null || 
+                valOriginalLanguage == 1 || valOriginalLanguage == null) {
+                // first, get some data from the API
+                var title = "";
+                var imdbRating = "";
+                var yearEnd = "";
+                var language = "";
+
+                // find a link to the IMDB profile
+                var imdb_link = $("img.imdb").parent().attr('href');
+                if (imdb_link) {
+                    var imdb_id = imdb_link.split('/');
+                    if (imdb_id[imdb_id.length - 1] == "" || "combined" == imdb_id[imdb_id.length - 1]) {
+                        imdb_id = imdb_id[imdb_id.length - 2];
+                    } else {
+                        imdb_id = imdb_id[imdb_id.length - 1];
+                    }
+
+                    var api_key = "582BD8F699A9666AF3B8431E5B624";
+                    var api_url = "http://imdbapi.tomizzi.com/api.php?id=" + imdb_id + "&api_key=" + api_key;
+                }
+                    
+                // get data
+                var json = (function () {
+                    $.ajax({
+                        'async': false,     // pointless to use asynchronous call, since title is used in almost every feature
+                        'global': false,
+                        'url': api_url,
+                        'dataType': "json",
+                        'success': function (data) {
+                            title = data.Title;
+                            data.Rating ? imdbRating = data.Rating : imdbRating = "N/A";
+                            yearEnd = data.YearEnd;
+                            language = data.Language;
+                        }
+                    });
+                })();
+            }
+
+
+            //////////////////////////////
+            ////////// FEATURES //////////
+            //////////////////////////////
 
             // IMDB RATING
             if (valImdb == "1" || valImdb == null) {
                 $("#rating").after('<div id="imdb_rating"><a href="' + imdb_link + '">' + imdbRating + '</a></div>');
+            } 
+
+            // FAVOURITE USERS RATING
+            if (valFavUsersRating == "1" || valFavUsersRating == null) {
+                var favCount = 0;
+                var favSum = 0;
+
+                $(".favorite > img").each(function() {
+                    favCount++;
+                    favSum += parseInt($(this).attr("width"));
+                });
+
+                $(".favorite > span > strong.rating").each(function() {
+                    favCount++;
+                });
+
+                // width size = number of stars
+                // 40 = 5*
+                // 32 = 4*
+                // 24 = 3*
+                // 16 = 2*
+                //  8 = 1*    
+                if (favCount > 0) {
+                    var favRating = (((favSum / 8) / favCount) * 20).toFixed();     
+                    $("#rating > h2").after('<strong class="hcenter">' + favRating + '% hodnocení oblíbených uživatelů</strong>');
+                }
             } 
 
             // ORIGINAL LANGUAGE
@@ -77,6 +120,46 @@ $(document).ready(function(){
                 origin = origin.replace(/\d{4}/g, yearStart[0] + "-" + yearEnd);
                 $(".origin").text(origin);
             }    
+
+            // EPISODES
+            if (valEpisodes == "1" || valEpisodes == null) {
+                // check if it's a TV show
+                var titleTag = $(document).attr('title');
+
+                if (titleTag.indexOf("(TV seriál)") >= 0) {
+                    // start displaying the episodes
+                    $("#plots").after(  '<div id="plots" class="ct-related">' + 
+                                            '<div class="header"><h3>Epizódy</h3></div>' +
+                                                '<div class="content">' +
+                                                    '<div class="ui-collapsible collapsed" id="eph4" data-collapsible="1">' +
+                                                        '<h4 class="title">Načíst</h4>' +
+                                                    '</div>' +
+                                                '</div>' +
+                                        '</div>');
+
+                    var loaded = false;
+                    var collapsed = true;
+
+                    $("#eph4 > h4").click(function() {
+                        if (collapsed) {
+                            $(this).removeClass("collapsed");
+                            collapsed = false;
+                            $("#eph4 > h4").text("Skrýt");
+                            $("#eph4 > .content").css("display", "block");
+                        } else {
+                            $(this).addClass("collapsed");
+                            collapsed = true;
+                            $("#eph4 > h4").text("Zobrazit");
+                            $("#eph4 > .content").css("display", "none");
+                        }
+
+                        if (!loaded) {
+                            loaded = getEpisodes(title);
+                        }
+                        
+                    });
+                }
+            }
             
             // YOUTUBE TRAILER
             var developerKey = "AIzaSyB4oumidwVxj-I-0bIQBKXBwBgS0YXXU0I";
