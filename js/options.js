@@ -13,9 +13,9 @@ var settings = ["imdbRating",
                 "movieTooltip",
                 "exportUserData"];
 
-// spusti restore_option() pred nacitanim stranky
+// runs restore_option() before page load
 document.addEventListener('DOMContentLoaded', restore_options);
-// po kliknuti na Ulozit spustit save_options()
+// runs save() after submitting the form
 document.querySelector('#submitButton').addEventListener('click', save_options);
 
 // save to localStorage

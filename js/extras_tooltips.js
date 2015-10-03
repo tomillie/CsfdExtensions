@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function() {
 
     try {
         var keys = new Array();
@@ -49,7 +49,7 @@ $(document).ready(function(){
                 return isValid;
             }
 
-            function createArtistPopup(e){
+            function createArtistPopup(e) {
                 var artist_link = $(this).attr('href');
                 var artist_link_prefix = "";
 
@@ -73,7 +73,7 @@ $(document).ready(function(){
                     }    
                 };
 
-                $(this).bind('mousemove', function(e){
+                $(this).bind('mousemove', function(e) {
                     $('div.artist-tooltip').css({
                         'top': e.pageY - ($('div.artist-tooltip').height() / 2) - 5,
                         'left': e.pageX + 15
@@ -81,7 +81,7 @@ $(document).ready(function(){
                 });
             }
 
-            function destroyArtistPopup(){
+            function destroyArtistPopup() {
                 $('div.artist-tooltip').remove();
 
             }
@@ -162,7 +162,7 @@ $(document).ready(function(){
                 return isValid;
             }
 
-            function createMoviePopup(e){
+            function createMoviePopup(e) {
                 var movie_link = $(this).attr('href');
                 var movie_link_prefix = "";
 
@@ -199,7 +199,7 @@ $(document).ready(function(){
                     }    
                 };
 
-                $(this).bind('mousemove', function(e){
+                $(this).bind('mousemove', function(e) {
                     $('div.movie-tooltip').css({
                         'top': e.pageY - ($('div.movie-tooltip').height() / 2) - 5,
                         'left': e.pageX + 15
@@ -207,7 +207,7 @@ $(document).ready(function(){
                 });
             }
 
-            function destroyMoviePopup(){
+            function destroyMoviePopup() {
                 $('div.movie-tooltip').remove();
 
             }

@@ -11,7 +11,6 @@ $(document).ready(function() {
         keys[6] = "goUp";
         keys[7] = "tvSerieEnding";
         keys[8] = "originalLanguage";
-        keys[9] = "exportUserData";
         
         chrome.storage.local.get(keys, function (result) {
             valImdb = result.imdbRating;
@@ -23,7 +22,6 @@ $(document).ready(function() {
             valGoUp = result.goUp; 
             valTvSerieEnding = result.tvSerieEnding; 
             valOriginalLanguage = result.originalLanguage; 
-            valExportUserData = result.exportUserData; 
 
 
             if (valImdb == 1 || valImdb == null ||
@@ -33,6 +31,7 @@ $(document).ready(function() {
                 valEpisodes == 1 || valEpisodes == null || 
                 valTvSerieEnding == 1 || valTvSerieEnding == null || 
                 valOriginalLanguage == 1 || valOriginalLanguage == null) {
+                
                 // first, get some data from the API
                 var title = "";
                 var imdbRating = "";
