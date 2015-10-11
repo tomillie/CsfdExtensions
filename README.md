@@ -1,2 +1,2 @@
-# csfd-extensions
-CSFD Search &amp; Extensions to Google Chrome
+# CSFD Search &amp; Extensions
+Google Chrome version.
