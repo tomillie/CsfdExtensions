@@ -11,7 +11,7 @@ $(document).ready(function() {
         keys[6] = "goUp";
         keys[7] = "tvSerieEnding";
         keys[8] = "originalLanguage";
-        
+
         chrome.storage.local.get(keys, function (result) {
             valImdb = result.imdbRating;
             valFavUsersRating = result.favUsersRating;
@@ -51,7 +51,8 @@ $(document).ready(function() {
                     var api_key = "582BD8F699A9666AF3B8431E5B624";
                     var api_url = "http://imdbapi.tomizzi.com/api.php?id=" + imdb_id + "&api_key=" + api_key;
                 }
-                    
+                var imdb_link_pretty = imdb_link.replace('combined', '');
+
                 // get data
                 var json = (function () {
                     $.ajax({
@@ -76,7 +77,7 @@ $(document).ready(function() {
 
             // IMDB RATING
             if (valImdb == "1" || valImdb == null) {
-                $("#rating").after('<div id="imdb_rating"><a href="' + imdb_link + '">' + imdbRating + '</a></div>');
+                $("#rating").after('<div id="imdb_rating"><a href="' + imdb_link_pretty + '">' + imdbRating + '</a></div>');
             } 
 
             // FAVOURITE USERS RATING
