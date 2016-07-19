@@ -17,7 +17,7 @@ window.onload=function() {
         function(tab) {
             chrome.tabs.sendMessage(tab[0].id, {method: "getSelection"}, 
                 function(response) {
-                    if (response.data != "") {
+                    if (typeof response !== 'undefined' && response.data != "") {
                         chrome.tabs.create({url: 'http://chrome.tomizzi.com/search.php?nastroj=csfd&fraza=' + response.data});
                     }
                 });
