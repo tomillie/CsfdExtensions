@@ -1,39 +1,37 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <title>CSFD Vyhľadávanie</title>
-        <link href="css/style.css" rel="stylesheet" type="text/css">
-        <link href="css/autocomplete.css" rel="stylesheet" type="text/css">
-        <script src="js/popup.js" type="text/javascript"></script>
-        <script src="js/jquery.js"></script>
-        <script src="js/jquery-ui.js"></script>
-        <script src="js/autocomplete.js"></script>
-        <!--
-               *********************************************
-               ** Code: Tomáš Smetanka                    **
-               ** Created: 19. 08. 2010                   **
-               ** Support: chrome@tomizzi.com             **
-               **                                         **
-               ** Copyright (c) Tomáš Smetanka            **
-               *********************************************
-        -->
-    </head>
-    <body>
-        <div id="wrapper">
-            <form action="http://chrome.tomizzi.com/search.php?nastroj=csfd&fraza=" id="searchformmovie" target="_blank">  
-                <table border="0" width="170">
-                    <tr>
-                        <td>  
-                            <input type="text" name="fraza" id="mainSearch" tabindex="1" size="20" maxlength="255" autofocus required>
-                            <input name="nastroj" type="hidden" value="csfd" >
-                        </td>
-                        <td>
-                            <input type="submit" value="" id="searchButton">
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </div>
-    </body>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>CSFD Vyhľadávanie</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/autocomplete.css" rel="stylesheet" type="text/css">
+    <script src="js/popup.js" type="text/javascript"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <script src="js/autocomplete.js"></script>
+    <!--
+           *********************************************
+           ** Code: Tomáš Smetanka                    **
+           ** Created: 19. 08. 2010                   **
+           ** Support: chrome@tomizzi.com             **
+           **                                         **
+           ** Copyright (c) Tomáš Smetanka            **
+           *********************************************
+    -->
+</head>
+<body>
+    <form action="http://chrome.tomizzi.com/search.php?nastroj=csfd&fraza=" id="searchformmovie" target="_blank">  
+        <table border="0" width="170">
+            <tr>
+                <td>  
+                    <input type="text" name="fraza" id="mainSearch" tabindex="1" size="20" maxlength="255" autofocus required>
+                    <input name="nastroj" type="hidden" value="csfd" >
+                </td>
+                <td>
+                    <input type="submit" value="" id="searchButton">
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
 </html>
