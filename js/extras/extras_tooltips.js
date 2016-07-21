@@ -93,6 +93,7 @@ $(document).ready(function() {
 			// MOVIE TOOLTIP
 			if (valMovieTooltip == "1" || valMovieTooltip == null) {
 				$('a[href^="/film/"], [href^="http://www.csfd.cz/film/"]')
+					.not('a[href$="/prehled/"]')
 					.not('a[href*="/videa/"]')
 					.not('a[href*="/bazar/"]')
 					.not('a[href*="/oceneni/"]')
@@ -102,7 +103,16 @@ $(document).ready(function() {
 					.not('a[href*="/filmoteka/"]')
 					.not('a[href*="/komentare/"]')
 					.not('a[href*="/diskuze/"]')
-					.not('a[href$="/prehled/"]')
+					.not('a[href*="/epizody/"]')
+					// season of TV serie (if the url is like /film/420272-serie-1/ and doesn't fit zhe filter below)
+					.not('a[href*="-serie-"]')
+					// example of serie url: http://www.csfd.cz/film/237486-pernikovy-tata/420272-serie-1/
+					// example of episode url: http://www.csfd.cz/film/237486-pernikovy-tata/420276-cancer-man/
+					// we want to filter them out
+					// using regex: starts with /film, continuing with digits, arbitrary characters, / and digits again
+					.filter(function() {
+						return !this.href.match(/film\/\d*[a-zA-z0-9-]*\/{1}\d{1,}/);
+					})
 					.attr('rel', 'movie-info');
 			}
 
