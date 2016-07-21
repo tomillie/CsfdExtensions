@@ -4,10 +4,10 @@ $(document).ready(function() {
 	{
 		var keys = new Array();
 		keys[0] = "csfdLink";
-		
+
 		chrome.storage.local.get(keys, function (result) {
 			var valCsfd = result.csfdLink;
-			
+
 			// CSFD LINK
 			if (valCsfd == "1" || valCsfd == null) {
 
@@ -43,7 +43,9 @@ $(document).ready(function() {
 						});
 					})();
 
-					$("#maindetails_quicklinks").after('<a href="' + csfd_url + '">CSFD</a>');
+					$("#quicklinksMainSection .ghost:last").after('<a href="' + csfd_url + '" class="quicklink imdb_csfd_link">CSFD</a><span class="ghost">|</span>');
+					$(".show_more.quicklink").html('<span class="titleOverviewSprite quicklinksArrowUp"></span>');
+					$(".show_less.quicklink").html('<span class="titleOverviewSprite quicklinksArrowDown"></span>');
 				}
 
 			}
