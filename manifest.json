@@ -19,12 +19,12 @@
 	"permissions": ["tabs", "http://*/*", "https://*/*", "storage"],
 	"content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
 	"content_scripts": [ {
-		"css": [ "css/style.css" ],
+		"css": [ "css/style-csfd.css" ],
 		"js": [ "js/jquery.js", "js/extras.js", "js/extras_episodes.js", "js/helper.js" ],
 		"matches": [ "http://www.csfd.cz/film/*", "https://www.csfd.cz/film/*" ]
 	},
 	{
-		"css": [ "css/style.css" ],
+		"css": [ "css/style-csfd.css" ],
 		"js": [ "js/jquery.js", "js/extras_tooltips.js", "js/jquery.hoverIntent.minified.js" ],
 		"matches": [ "http://www.csfd.cz/*", "https://www.csfd.cz/*" ]
 	},
