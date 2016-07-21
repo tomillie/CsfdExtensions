@@ -20,16 +20,16 @@
 	"content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
 	"content_scripts": [ {
 		"css": [ "css/style-csfd.css" ],
-		"js": [ "js/jquery.js", "js/extras.js", "js/extras_episodes.js", "js/helper.js" ],
+		"js": [ "js/libs/jquery.js", "js/extras/extras.js", "js/extras/extras_episodes.js", "js/other/helper.js" ],
 		"matches": [ "http://www.csfd.cz/film/*", "https://www.csfd.cz/film/*" ]
 	},
 	{
 		"css": [ "css/style-csfd.css" ],
-		"js": [ "js/jquery.js", "js/extras_tooltips.js", "js/jquery.hoverIntent.minified.js" ],
+		"js": [ "js/libs/jquery.js", "js/extras/extras_tooltips.js", "js/libs/jquery.hoverIntent.minified.js" ],
 		"matches": [ "http://www.csfd.cz/*", "https://www.csfd.cz/*" ]
 	},
 	{
-		"js": [ "js/extras_export.js" ],
+		"js": [ "js/extras/extras_export.js" ],
 		"matches": [ "http://www.csfd.cz/uzivatel/*", "https://www.csfd.cz/uzivatel/*" ]
 	},
 	{
@@ -38,7 +38,7 @@
 	},
 	{
 		"css": [ "css/style-imdb.css" ],
-		"js": [ "js/jquery.js", "js/extras_imdb.js" ],
+		"js": [ "js/libs/jquery.js", "js/extras/extras_imdb.js" ],
 		"matches": [ "http://www.imdb.com/*" ]
 	}],
 		"web_accessible_resources": [ "img/cc.gif", "img/utorrent.jpg" , "img/up.png" , "img/csfd.png" ]
