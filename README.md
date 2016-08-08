@@ -1,2 +1,2 @@
 # CSFD Search &amp; Extensions
-Google Chrome version.
+Microsoft Edge version.
