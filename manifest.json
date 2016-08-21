@@ -25,7 +25,7 @@
 	},
 	{
 		"css": [ "css/style-csfd.css" ],
-		"js": [ "js/libs/jquery.js", "js/extras/extras_tooltips.js", "js/libs/jquery.hoverIntent.minified.js" ],
+		"js": [ "js/libs/jquery.js", "js/extras/extras_tooltips.js", "js/libs/jquery.hoverIntent.minified.js", "js/other/helper.js", "js/enums/cache_type.js" ],
 		"matches": [ "http://www.csfd.cz/*", "https://www.csfd.cz/*" ]
 	},
 	{

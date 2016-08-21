@@ -22,6 +22,8 @@ $(document).ready(function() {
 			}
 
 			function getArtistProfile(url, e) {
+				var content;
+
 				return $.ajax({
 					url: url,
 					type: "GET",
@@ -29,7 +31,7 @@ $(document).ready(function() {
 					success: function(data) {
 						// ignore if there are some redirect
 						if (typeof data.redirect == 'undefined') {
-							var content = $(data).find('#profile').html();
+							content = $(data).find('#profile').html();
 							if (content == null) {
 								return false;
 							}
@@ -38,13 +40,23 @@ $(document).ready(function() {
 								filmography += $(data).find('#filmography .content tr').get(i).outerHTML;
 							}
 							content = content.replace('</ul>', '</ul><br><table>' + filmography + '</table>');
-							$('<div class="artist-tooltip">' + content + '</div>').appendTo('body').fadeIn('fast');
-							$('div.artist-tooltip').css({
-								'top': e.pageY - ($('div.artist-tooltip').height() / 2) - 5,
-								'left': e.pageX + 15
-							});
+
+							// use the content in a popup
+							fillUpArtistPopup(content, e);
+
+							// store to cache
+							storeToCache(CacheType.ARTIST, normalizeArtistObject(content, $.now()), getCsfdIdFromUrl(url));
 						}
 					}
+				});
+			}
+
+			function fillUpArtistPopup(content, e) {
+
+				$('<div class="artist-tooltip">' + content + '</div>').appendTo('body').fadeIn('fast');
+				$('div.artist-tooltip').css({
+					'top': e.pageY - ($('div.artist-tooltip').height() / 2) - 5,
+					'left': e.pageX + 15
 				});
 			}
 
@@ -60,13 +72,26 @@ $(document).ready(function() {
 
 				var urls = [
 							artist_link_prefix + artist_link + "gelerie/podle-rating_average/",
-							artist_link_prefix + artist_link + "autogram/podle-rating_average/",
 							artist_link_prefix + artist_link + "oceneni/podle-rating_average/",
+							artist_link_prefix + artist_link + "autogram/podle-rating_average/",
 							artist_link_prefix + artist_link + "zajimavosti/podle-rating_average/",
 							artist_link_prefix + artist_link + "podle-rating_average/"
 							];
 
-				tryGetArtistProfile(urls, urls.length - 1, e);
+				// check the cache
+				var cache;
+				var content;
+
+				$.when(retrieveFromCache(CacheType.ARTIST, getCsfdIdFromUrl(urls[urls.length - 1]))).then(function(result) {
+					cache = result;
+					if (typeof cache != 'undefined' && cache != null && cache.tooltipContent != null) {
+						content = cache.tooltipContent;
+						fillUpArtistPopup(content, e);
+					} else {
+						// if the artist is not yet stored in cache
+						tryGetArtistProfile(urls, urls.length - 1, e);
+					}
+				});
 
 				$(this).bind('mousemove', function(e) {
 					$('div.artist-tooltip').css({
@@ -77,7 +102,7 @@ $(document).ready(function() {
 			}
 
 			function tryGetArtistProfile(urls, i, e) {
-				getArtistProfile(urls[i], e).done(function(result) {
+				$.when(getArtistProfile(urls[i], e)).done(function(result) {
 					if (typeof result.redirect == 'undefined') {
 						i = 0;
 						return;
@@ -100,7 +125,7 @@ $(document).ready(function() {
 				over: createArtistPopup,
 				out: destroyArtistPopup,
 				interval: 300, // delay before 'over'
-				timeout: 500 // delay before 'out'
+				timeout: 200 // delay before 'out'
 			});
 
 			// MOVIE TOOLTIP
@@ -130,13 +155,15 @@ $(document).ready(function() {
 			}
 
 			function getMovieProfile(url, e) {
+				var content;
+
 				return $.ajax({
 					url: url,
 					type: "GET",
 					async: true,
 					cache: true,
 					success: function(data) {
-						// ignore if there are some redirect
+						// ignore if there is some redirection
 						if (typeof data.redirect == 'undefined') {
 							var content = "<table border=\"0\"><tr><td>";
 							var poster = $(data).find('.film-poster').get(0);
@@ -173,15 +200,24 @@ $(document).ready(function() {
 							if (content == null) {
 								return false;
 							}
-							$('<div class="movie-tooltip">' + content + '</div>').appendTo('body').fadeIn('fast');
-							$('div.movie-tooltip').css({
-								'top': e.pageY - ($('div.movie-tooltip').height() / 2) - 5,
-								'left': e.pageX + 15
-							});
+							// use the content in a popup
+							fillUpMoviePopup(content, e);
+
+							// store to cache
+							storeToCache(CacheType.MOVIE, normalizeMovieObject(null, content, null, null, null, $.now()), getCsfdIdFromUrl(url));
 						} else {
 							return false;
 						}
 					}
+				});
+			}
+
+			function fillUpMoviePopup(content, e) {
+
+				$('<div class="movie-tooltip">' + content + '</div>').appendTo('body').fadeIn('fast');
+				$('div.movie-tooltip').css({
+					'top': e.pageY - ($('div.movie-tooltip').height() / 2) - 5,
+					'left': e.pageX + 15
 				});
 			}
 
@@ -213,10 +249,24 @@ $(document).ready(function() {
 							movie_link_prefix + movie_link + "videa/",
 							movie_link_prefix + movie_link + "diskuze/",
 							movie_link_prefix + movie_link + "galerie/",
+							movie_link_prefix + movie_link + "komentare/",
 							movie_link_prefix + movie_link
 							];
 
-				tryGetMovieProfile(urls, urls.length - 1, e);
+				// check the cache
+				var cache;
+				var content;
+
+				$.when(retrieveFromCache(CacheType.MOVIE, getCsfdIdFromUrl(urls[urls.length - 1]))).then(function(result) {
+					cache = result;
+					if (typeof cache != 'undefined' && cache != null && cache.tooltipContent != null) {
+						content = cache.tooltipContent;
+						fillUpMoviePopup(content, e);
+					} else {
+						// if the movie is not yet stored in cache
+						tryGetMovieProfile(urls, urls.length - 1, e);
+					}
+				});
 
 				$(this).bind('mousemove', function(e) {
 					$('div.movie-tooltip').css({
@@ -227,7 +277,7 @@ $(document).ready(function() {
 			}
 
 			function tryGetMovieProfile(urls, i, e) {
-				getMovieProfile(urls[i], e).done(function(result) {
+				$.when(getMovieProfile(urls[i], e)).then(function(result) {
 					if (typeof result.redirect == 'undefined') {
 						i = 0;
 						return;
@@ -250,7 +300,7 @@ $(document).ready(function() {
 				over: createMoviePopup,
 				out: destroyMoviePopup,
 				interval: 300, // delay before 'over'
-				timeout: 500 // delay before 'out'
+				timeout: 200 // delay before 'out'
 			});
 
 		});

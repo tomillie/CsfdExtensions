@@ -28,6 +28,7 @@ function iso8601TimeToHMS(s) {
  * @return {string}          String of languages in czech.
  */
 function transalteOriginalLanguage(language) {
+
 	var langInEnglish = new Array(
 								'Afrikaans',
 								'Albanian',
@@ -146,4 +147,178 @@ function transalteOriginalLanguage(language) {
 	}
 
 	return language;
+}
+
+/**
+ * Stores an object to the cache.
+ * 
+ * @param  CacheTye type 	The type of the object which is to be stored into the cache
+ * @param  Object 	data 	The object to be stored
+ * @param  int id   		ID of the object to be stored
+ * @return boolean      	True if the process ended successfully, false otherwise
+ */
+function storeToCache(type, data, id) {
+
+	switch(type) {
+		case CacheType.ARTIST:
+			chrome.storage.local.get('artists', function (result) {
+				if (typeof result.artists == 'undefined') {
+					result.artists = [];
+				}
+				result.artists[id] = updateOldObject(result.artists[id], data);
+				chrome.storage.local.set({'artists': result.artists});
+				return true;
+			});
+			break;
+
+		case CacheType.MOVIE:
+			chrome.storage.local.get('movies', function (result) {
+				if (typeof result.movies == 'undefined') {
+					result.movies = [];
+				}
+				result.movies[id] = updateOldObject(result.movies[id], data);
+				chrome.storage.local.set({'movies': result.movies});
+				return true;
+			});
+			break;
+
+		default:
+			return false;
+	}
+
+}
+
+/**
+ * Retrieves movies or artists from a storage cache if they exist.
+ * 
+ * @param  CacheType type 	Specify if the object retrieved from cache should be a movie or an artist
+ * @param  int id   		ID of the object
+ * @return Object      		Retrieved object
+ */
+function retrieveFromCache(type, id) {
+
+	var dfrd = $.Deferred();
+
+	switch(type) {
+		case CacheType.ARTIST:
+			chrome.storage.local.get('artists', function (result) {
+				if (typeof result.artists == 'undefined') {
+					dfrd.resolve(null);
+				} else {
+					if (result.artists[id] == null || isOlderThanMonth(result.artists[id].timestamp)) {
+						dfrd.resolve(null);
+					}
+					dfrd.resolve(result.artists[id]);
+				}
+			});
+			break;
+
+		case CacheType.MOVIE:
+			chrome.storage.local.get('movies', function (result) {
+				if (typeof result.movies == 'undefined') { // if the movies are not initializied yet (e.g. after the extension installation)
+					dfrd.resolve(null);
+				} else {
+					if (result.movies[id] == null || isOlderThanMonth(result.movies[id].timestamp)) {
+						dfrd.resolve(null);
+					}
+					dfrd.resolve(result.movies[id]);
+				}
+			});
+			break;
+
+		default:
+			return null;
+	}
+
+	return dfrd.promise();
+}
+
+/**
+ * Updates an object with a new object comparing their properties.
+ * If the property is null, nothing is updated, otherwise it is.
+ * 
+ * @param  Object oldObject The object ot be updated
+ * @param  Object newObject The object which updates the old one
+ * @return Object           Updated object
+ */
+function updateOldObject(oldObject, newObject) {
+
+	if (oldObject == null) {
+		return newObject;
+	}
+
+	var updatedObject = {};
+
+	for (var key in oldObject) {
+		updatedObject[key] = newObject[key] == null || newObject[key] == 'undefined' ? oldObject[key] : newObject[key];
+	}
+
+	return updatedObject;
+}
+
+/**
+ * Creates an artist object for further use (a constructor).
+ * 
+ * @param  string tooltipContent Parameter 1
+ * @param  string timestamp      Parameter 2
+ * @return Object                Normalized object.
+ */
+function normalizeArtistObject(tooltipContent, timestamp) {
+
+	var normalizedObject = {
+		tooltipContent: tooltipContent,
+		timestamp: timestamp
+	}
+
+	return normalizedObject;
+}
+
+/**
+ * Creates a movie object for further use (a constructor).
+ * 
+ * @param  string  movieInfo      Parameter 1
+ * @param  string  tooltipContent Parameter 2
+ * @param  string  youtubeVideo   Parameter 3
+ * @param  {Boolean} isTVShow     Parameter 4
+ * @param  string  episodes       Parameter 5
+ * @param  string  timestamp      Parameter 6
+ * @return Object                 Normalized object
+ */
+function normalizeMovieObject(movieInfo, tooltipContent, youtubeVideo, isTVShow, episodes, timestamp) {
+
+	var normalizedObject = {
+		movieInfo: movieInfo,
+		tooltipContent: tooltipContent,
+		youtubeVideo: youtubeVideo,
+		isTVShow: isTVShow,
+		episodes: episodes,
+		timestamp: timestamp
+	}
+
+	return normalizedObject;
+}
+
+/**
+ * Gets CSFD ID of the movie or artist from CSFD url.
+ * 
+ * @param  string url 	CSFD url
+ * @return int     		ID of the movie or artist
+ */
+function getCsfdIdFromUrl(url) {
+
+	return url.match(/\d+/)[0];
+}
+
+/**
+ * Checks if the provided timestamp is older than a month.
+ * 
+ * @param  Date  	timestamp 	Timestamp to be checked
+ * @return Boolean           	True if the timestamp is older than a month, false otherwise
+ */
+function isOlderThanMonth(timestamp) {
+
+	var monthInMiliseconds = 30 * 24 * 60 * 60 * 1000;
+	var currentTimestamp = $.now();
+
+	return currentTimestamp - timestamp > monthInMiliseconds;
 }
