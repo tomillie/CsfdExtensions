@@ -152,10 +152,10 @@ function transalteOriginalLanguage(language) {
 /**
  * Stores an object to the cache.
  * 
- * @param  CacheTye type 	The type of the object which is to be stored into the cache
- * @param  Object 	data 	The object to be stored
- * @param  int id   		ID of the object to be stored
- * @return boolean      	True if the process ended successfully, false otherwise
+ * @param  {CacheTye} 	type 	The type of the object which is to be stored into the cache
+ * @param  {Object} 	data 	The object to be stored
+ * @param  {int} 		id 		ID of the object to be stored
+ * @return {boolean} 			True if the process ended successfully, false otherwise
  */
 function storeToCache(type, data, id) {
 
@@ -191,9 +191,9 @@ function storeToCache(type, data, id) {
 /**
  * Retrieves movies or artists from a storage cache if they exist.
  * 
- * @param  CacheType type 	Specify if the object retrieved from cache should be a movie or an artist
- * @param  int id   		ID of the object
- * @return Object      		Retrieved object
+ * @param  {CacheType} 	type 	Specify if the object retrieved from cache should be a movie or an artist
+ * @param  {int} 		id 		ID of the object
+ * @return {Object} 			Retrieved object
  */
 function retrieveFromCache(type, id) {
 
@@ -237,9 +237,9 @@ function retrieveFromCache(type, id) {
  * Updates an object with a new object comparing their properties.
  * If the property is null, nothing is updated, otherwise it is.
  * 
- * @param  Object oldObject The object ot be updated
- * @param  Object newObject The object which updates the old one
- * @return Object           Updated object
+ * @param  {Object} oldObject 	The object ot be updated
+ * @param  {Object} newObject 	The object which updates the old one
+ * @return {Object} 			Updated object
  */
 function updateOldObject(oldObject, newObject) {
 
@@ -259,9 +259,9 @@ function updateOldObject(oldObject, newObject) {
 /**
  * Creates an artist object for further use (a constructor).
  * 
- * @param  string tooltipContent Parameter 1
- * @param  string timestamp      Parameter 2
- * @return Object                Normalized object.
+ * @param  {string} tooltipContent 	Parameter 1
+ * @param  {string} timestamp 		Parameter 2
+ * @return {Object} 				Normalized object.
  */
 function normalizeArtistObject(tooltipContent, timestamp) {
 
@@ -276,13 +276,13 @@ function normalizeArtistObject(tooltipContent, timestamp) {
 /**
  * Creates a movie object for further use (a constructor).
  * 
- * @param  string  movieInfo      Parameter 1
- * @param  string  tooltipContent Parameter 2
- * @param  string  youtubeVideo   Parameter 3
- * @param  {Boolean} isTVShow     Parameter 4
- * @param  string  episodes       Parameter 5
- * @param  string  timestamp      Parameter 6
- * @return Object                 Normalized object
+ * @param  {string} 	movieInfo 		Parameter 1
+ * @param  {string} 	tooltipContent 	Parameter 2
+ * @param  {string} 	youtubeVideo 	Parameter 3
+ * @param  {boolean} 	isTVShow 		Parameter 4
+ * @param  {string} 	episodes 		Parameter 5
+ * @param  {string} 	timestamp 		Parameter 6
+ * @return {Object} 					Normalized object
  */
 function normalizeMovieObject(movieInfo, tooltipContent, youtubeVideo, isTVShow, episodes, timestamp) {
 
@@ -301,8 +301,8 @@ function normalizeMovieObject(movieInfo, tooltipContent, youtubeVideo, isTVShow,
 /**
  * Gets CSFD ID of the movie or artist from CSFD url.
  * 
- * @param  string url 	CSFD url
- * @return int     		ID of the movie or artist
+ * @param  {string} url 	CSFD url
+ * @return {int} 			ID of the movie or artist
  */
 function getCsfdIdFromUrl(url) {
 
@@ -312,8 +312,8 @@ function getCsfdIdFromUrl(url) {
 /**
  * Checks if the provided timestamp is older than a month.
  * 
- * @param  Date  	timestamp 	Timestamp to be checked
- * @return Boolean           	True if the timestamp is older than a month, false otherwise
+ * @param  {Date} 	timestamp 	Timestamp to be checked
+ * @return {boolean} 			True if the timestamp is older than a month, false otherwise
  */
 function isOlderThanMonth(timestamp) {
 
