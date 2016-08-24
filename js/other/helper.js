@@ -159,6 +159,8 @@ function transalteOriginalLanguage(language) {
  */
 function storeToCache(type, data, id) {
 
+	var dfrd = $.Deferred();
+
 	switch(type) {
 		case CacheType.ARTIST:
 			chrome.storage.local.get('artists', function (result) {
@@ -166,8 +168,9 @@ function storeToCache(type, data, id) {
 					result.artists = [];
 				}
 				result.artists[id] = updateOldObject(result.artists[id], data);
-				chrome.storage.local.set({'artists': result.artists});
-				return true;
+				chrome.storage.local.set({'artists': result.artists}, function() {
+					dfrd.resolve(true);
+				});
 			});
 			break;
 
@@ -177,15 +180,17 @@ function storeToCache(type, data, id) {
 					result.movies = [];
 				}
 				result.movies[id] = updateOldObject(result.movies[id], data);
-				chrome.storage.local.set({'movies': result.movies});
-				return true;
+				chrome.storage.local.set({'movies': result.movies}, function() {
+					dfrd.resolve(true);
+				});
 			});
 			break;
 
 		default:
-			return false;
+			dfrd.resolve(false);
 	}
 
+	return dfrd.promise();
 }
 
 /**
@@ -250,7 +255,7 @@ function updateOldObject(oldObject, newObject) {
 	var updatedObject = {};
 
 	for (var key in oldObject) {
-		updatedObject[key] = newObject[key] == null || newObject[key] == 'undefined' ? oldObject[key] : newObject[key];
+		updatedObject[key] = newObject[key] == null || typeof newObject[key] == 'undefined' ? oldObject[key] : newObject[key];
 	}
 
 	return updatedObject;
@@ -299,6 +304,44 @@ function normalizeMovieObject(movieInfo, tooltipContent, youtubeVideo, isTVShow,
 }
 
 /**
+ * Creates a movieInfo object for further use (a constructor).
+ * 
+ * @param  {string} title 		Paramter 1
+ * @param  {string} imdbRating 	Paramter 2
+ * @param  {string} yearEnd 	Paramter 3
+ * @param  {string} language 	Paramter 4
+ * @return {Object} 			Normalized object
+ */
+function normalizeMovieInfoObject(title, imdbRating, yearEnd, language) {
+
+	var normalizedObject = {
+		title: title,
+		imdbRating: imdbRating,
+		yearEnd: yearEnd,
+		language: language
+	}
+
+	return normalizedObject;
+}
+
+/**
+ * Creates a youtubeVideo object for further use (a constructor).
+ * 
+ * @param  {string} id 			Parameter 1
+ * @param  {string} duration 	Parameter 2
+ * @return {Object}  			Normalized object
+ */
+function normalizeYouTubeVideoObject(id, duration) {
+
+	var normalizedObject = {
+		id: id,
+		duration: duration
+	}
+
+	return normalizedObject;
+}
+
+/**
  * Gets CSFD ID of the movie or artist from CSFD url.
  * 
  * @param  {string} url 	CSFD url
@@ -321,4 +364,15 @@ function isOlderThanMonth(timestamp) {
 	var currentTimestamp = $.now();
 
 	return currentTimestamp - timestamp > monthInMiliseconds;
+}
+
+/**
+ * Prints all chrome.storage.local data into console (might be useful during debug).
+ */
+function printAllStorageData() {
+
+	chrome.storage.local.get(function(items) {
+		console.log(items);
+	});
+
 }
