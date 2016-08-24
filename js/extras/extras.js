@@ -169,7 +169,7 @@ chrome.storage.local.get(keys, function (result) {
 						$("#eph4 > .content").css("display", "block");
 						if (!loaded) {
 							// check the cache
-							if (cache.episodes != null && typeof cache.episodes != 'undefined') {
+							if (cache != null && cache.episodes != null && typeof cache.episodes != 'undefined') {
 								printEpisodes(cache.episodes);
 							} else {
 								getEpisodes(title, getCsfdIdFromUrl(currentUrl));
@@ -190,7 +190,7 @@ chrome.storage.local.get(keys, function (result) {
 		var developerKey = "AIzaSyB4oumidwVxj-I-0bIQBKXBwBgS0YXXU0I";
 
 		if ((valYoutube == "1" || valYoutube == null) && currentUrl.indexOf("videa") !== -1) {
-			if (cache.youtubeVideo != null && typeof cache.youtubeVideo != 'undefined' && cache.youtubeVideo.id != null && cache.youtubeVideo.duration != null) {
+			if (cache != null && cache.youtubeVideo != null && typeof cache.youtubeVideo != 'undefined' && cache.youtubeVideo.id != null && cache.youtubeVideo.duration != null) {
 				// place the video on the page
 				placeVideoOnPage(cache.youtubeVideo.id, cache.youtubeVideo.duration);
 			} else {
