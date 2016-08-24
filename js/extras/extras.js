@@ -167,17 +167,21 @@ chrome.storage.local.get(keys, function (result) {
 						collapsed = false;
 						$("#eph4 > h4").text("Skrýt");
 						$("#eph4 > .content").css("display", "block");
+						if (!loaded) {
+							// check the cache
+							if (cache.episodes != null && typeof cache.episodes != 'undefined') {
+								printEpisodes(cache.episodes);
+							} else {
+								getEpisodes(title, getCsfdIdFromUrl(currentUrl));
+								loaded = true;
+							}
+						}
 					} else {
 						$(this).addClass("collapsed");
 						collapsed = true;
 						$("#eph4 > h4").text("Zobrazit");
 						$("#eph4 > .content").css("display", "none");
 					}
-
-					if (!loaded) {
-						loaded = getEpisodes(title);
-					}
-
 				});
 			}
 		}
@@ -257,7 +261,6 @@ chrome.storage.local.get(keys, function (result) {
 			var torrent_names = [];
 			var torrent_urls = [];
 
-			// pozor, getJSON() beží asynchrónne
 			$.getJSON(links_url, function (json_data) {
 				$.each(json_data.links, function(index, element) {
 					if (element.type == "cc") {
