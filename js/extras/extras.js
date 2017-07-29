@@ -96,6 +96,8 @@ chrome.storage.local.get(keys, function(result) {
      */
     function addFeatures() {
 
+        var titleDecoded = decodeEntities(title);
+
         // IMDB RATING
         if (valImdb == "1" || valImdb == null) {
             $("#rating").after('<div id="imdb_rating"><a href="' + imdbLink_pretty + '">' + imdbRating + '</a></div>');
@@ -198,7 +200,7 @@ chrome.storage.local.get(keys, function(result) {
                 $.ajax({
                     'async': true,
                     'global': false,
-                    'url': 'https://www.googleapis.com/youtube/v3/search?q=' + title + ' trailer' +
+                    'url': 'https://www.googleapis.com/youtube/v3/search?q=' + titleDecoded + ' trailer' +
                         '&part=snippet&maxResults=1&order=relevance&type=video&videoEmbeddable=true&key=' + developerKey,
                     'dataType': "json",
                     'success': function(data) {

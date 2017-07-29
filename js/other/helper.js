@@ -369,6 +369,18 @@ function isOlderThanMonth(timestamp) {
 }
 
 /**
+ * Decodes a string with special HTML characters (e.g.: single qoute (') as &#x27;).
+ *
+ * @param {string} encodedString String to be decoded
+ */
+function decodeEntities(encodedString) {
+    var div = document.createElement('div');
+    div.innerHTML = encodedString;
+
+    return div.textContent;
+}
+
+/**
  * Prints all chrome.storage.local data into console (might be useful during debug).
  */
 function printAllStorageData() {
