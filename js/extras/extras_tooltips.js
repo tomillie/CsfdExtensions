@@ -28,14 +28,18 @@ chrome.storage.local.get(keys, function(result) {
             success: function(data) {
                 // ignore if there are some redirect
                 if (typeof data.redirect == 'undefined') {
-                    content = $(data).find('#profile').html();
+                    content = $(data).find('#profile');
                     if (content == null) {
                         return false;
                     }
+                    // remove photo copyright if exists
+                    content.find('.photo-copyright').remove();
+                    // add artist's filmography
                     var filmography = "";
                     for (var i = 0; i < 3; i++) {
                         filmography += $(data).find('#filmography .content tr').get(i).outerHTML;
                     }
+                    content = content.html();
                     content = content.replace('</ul>', '</ul><br><table>' + filmography + '</table>');
 
                     // use the content in a popup
