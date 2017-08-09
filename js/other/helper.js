@@ -374,6 +374,7 @@ function isOlderThanMonth(timestamp) {
  * @param {string} encodedString String to be decoded
  */
 function decodeEntities(encodedString) {
+
     var div = document.createElement('div');
     div.innerHTML = encodedString;
 

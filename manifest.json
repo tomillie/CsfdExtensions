@@ -7,16 +7,16 @@
         "128": "img/icon_128.png"
     },
     "options_page": "options.html",
-    "minimum_chrome_version": "10",
+    "minimum_chrome_version": "28",
     "default_locale": "cs",
     "background": {
-        "page": "popup.html"
+        "scripts": ["js/other/background_scripts.js"]
     },
     "browser_action": {
         "default_icon": "img/icon.png",
         "default_popup": "popup.html"
     },
-    "permissions": ["tabs", "http://*/*", "https://*/*", "storage"],
+    "permissions": ["tabs", "http://*/*", "https://*/*", "storage", "notifications"],
     "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
     "content_scripts": [{
             "css": ["css/style-csfd.css"],
@@ -33,7 +33,7 @@
             "matches": ["http://www.csfd.cz/uzivatel/*", "https://www.csfd.cz/uzivatel/*"]
         },
         {
-            "js": ["js/content_script.js"],
+            "js": ["js/other/content_scripts.js"],
             "matches": ["http://*/*", "https://*/*"]
         },
         {
