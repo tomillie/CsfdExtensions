@@ -1,3 +1,6 @@
+// Variables
+var extensionVersion = chrome.app.getDetails().version;
+
 // Google Analytics
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-18127823-1']);
@@ -10,9 +13,13 @@ _gaq.push(['_trackPageview']);
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
 })();
 
+// Search
 window.onload = function() {
     // language
     document.getElementById('searchButton').value = chrome.i18n.getMessage("button_search");
+
+    // current version in search bar
+    $("input[type=hidden][name=ver]").val(extensionVersion);
 
     // selected text
     chrome.tabs.query({ active: true, windowId: chrome.windows.WINDOW_ID_CURRENT },
@@ -20,9 +27,8 @@ window.onload = function() {
             chrome.tabs.sendMessage(tab[0].id, { method: "getSelection" },
                 function(response) {
                     if (typeof response !== 'undefined' && response.data != "") {
-                        chrome.tabs.create({ url: 'https://chrome.tomizzi.com/search.php?nastroj=csfd&fraza=' + response.data });
+                        chrome.tabs.create({ url: 'https://chrome.tomizzi.com/search.php?ext=csfd&browser=c&ver=' + extensionVersion + '&q=' + response.data });
                     }
                 });
         });
-
 };

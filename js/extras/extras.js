@@ -51,7 +51,7 @@ chrome.storage.local.get(keys, function(result) {
             var apiKey = "582BD8F699A9666AF3B8431E5B624";
             var apiUrl = "https://imdbapi.tomizzi.com/api.php?id=" + imdbId + "&api_key=" + apiKey;
         }
-        var imdbLink_pretty = imdbLink.replace('combined', '');
+        var imdbLinkPretty = imdbLink.replace('combined', '');
 
         // check the cache
         $.when(retrieveFromCache(CacheType.MOVIE, getCsfdIdFromUrl(currentUrl))).then(function(result) {
@@ -100,7 +100,7 @@ chrome.storage.local.get(keys, function(result) {
 
         // IMDB RATING
         if (valImdb == "1" || valImdb == null) {
-            $("#rating").after('<div id="imdb_rating"><a href="' + imdbLink_pretty + '">' + imdbRating + '</a></div>');
+            $("#rating").after('<div id="imdb_rating"><a href="' + imdbLinkPretty + '">' + imdbRating + '</a></div>');
         }
 
         // FAVOURITE USERS RATING
