@@ -18,7 +18,7 @@ window.onload = function() {
     // language
     document.getElementById('searchButton').value = chrome.i18n.getMessage("button_search");
 
-    // current version in search bar
+    // current extension version in search bar
     $("input[type=hidden][name=ver]").val(extensionVersion);
 
     // selected text
