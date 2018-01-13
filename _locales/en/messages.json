@@ -12,7 +12,10 @@
 		"description": "Label for main search button in popup.html."
 	},
 
-	// Options page
+	"common_new_version_installed": {
+		"message": "New version successfully installed."
+	},
+
 	"opt_page_name": {
 		"message": "Settings",
 		"description": "Options page name."

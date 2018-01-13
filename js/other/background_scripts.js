@@ -5,7 +5,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
     } else if (details.reason == "update") {
         logOnInstalledMessage(details, true);
         removeCache();
-        popNotification("Nová verze úspěšně nainstalována.");
+        popNotification(chrome.i18n.getMessage("common_new_version_installed"));
     }
 });
 
@@ -37,7 +37,7 @@ function popNotification(message) {
         'CSFD_Extensions_Updated', {
             type: 'basic',
             iconUrl: './img/icon_128.png',
-            title: "CSFD Vyhledáváni & Rozšíření",
+            title: chrome.i18n.getMessage("ext_name"),
             message: message
         },
         function() {}

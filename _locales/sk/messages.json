@@ -8,8 +8,11 @@
 	"button_search": {
 		"message": "Hľadaj"
 	},
+	
+	"common_new_version_installed": {
+		"message": "Nová verzia úspešne nainštalovaná."
+	},
 
-	// Options page
 	"opt_page_name": {
 		"message": "Nastavenia"
 	},

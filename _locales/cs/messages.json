@@ -9,7 +9,11 @@
 		"message": "Hledej"
 	},
 
-	// Options page
+	"common_new_version_installed": {
+		"message": "Nová verze úspěšně nainstalována."
+	},
+
+
 	"opt_page_name": {
 		"message": "Nastavení"
 	},
