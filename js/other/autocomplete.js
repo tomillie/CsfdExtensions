@@ -47,6 +47,7 @@ $(document).ready(function() {
                 dataType: "json",
                 data: {
                     q: term,
+                    domain: document.domain,
                     api_key: "2B4DB333ADB11B2A7FEF7C9E1CC33"
                 },
                 success: function(data) {
