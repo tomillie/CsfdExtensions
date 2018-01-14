@@ -1,5 +1,3 @@
-var suggestCallBack;
-
 function resizePopup($param) {
     var ulHeight = $('ul').height() + 40;
     var ulWidth = $('ul').width() + 80;
@@ -73,7 +71,13 @@ $(document).ready(function() {
         open: function(event, ui) { resizePopup(); },
         close: function(event, ui) { resetPopup(); },
         select: function(event, ui) {
-            chrome.tabs.create({ url: "https://www.csfd.cz/film/" + ui.item.csfd_id });
+            // if this script is initiated from CSFD.cs search bar
+            if (document.domain == "www.csfd.cz") {
+                window.location.replace("https://www.csfd.cz/film/" + ui.item.csfd_id);
+            // from the extension's popup window
+            } else {
+                chrome.tabs.create({ url: "https://www.csfd.cz/film/" + ui.item.csfd_id });
+            }
         }
     });
 });

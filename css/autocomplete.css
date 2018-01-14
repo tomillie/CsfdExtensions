@@ -1,7 +1,16 @@
 /*! jQuery UI - v1.12.0 - 2016-07-18
 * http://jqueryui.com
 * Includes: core.css, autocomplete.css, menu.css
-* Copyright jQuery Foundation and other contributors; Licensed MIT */
+* Copyright jQuery Foundation and other contributors; Licensed MIT
+*
+* Notes from CSFD extension developer:
+* This CSS file is used either in the popup window or CSFD website (the search bar).
+* Therefore, some of the following properties are overriden in jquery-ui.css file loaded
+* directly on the CSFD website. To apply values from this file on the website too,
+* changed properties are marked !important.
+* If property default value is changed and used only in popup window,
+* the /* popup only *\/ comment is added.
+*/
 
 .ui-helper-hidden {
 	display: none;
@@ -55,7 +64,7 @@
 }
 
 .ui-state-disabled {
-	cursor: default!important;
+	cursor: default !important;
 	pointer-events: none;
 }
 
@@ -91,9 +100,9 @@
 }
 
 .ui-menu {
-	font-family: Century Gothic, sans-serif;
-	font-size: 11px;
-	border: 1px solid #bfb6b6;
+	font-family: Century Gothic, sans-serif; /* popup only */
+	font-size: 11px !important;
+	border: 1px solid #bfb6b6 !important;
 	list-style: none;
 	padding: 0;
 	margin: 0;
@@ -126,9 +135,14 @@
 
 .ui-menu .ui-state-focus,
 .ui-menu .ui-state-active {
-	color: black;
-	background-color: #bfb6b6;
-	cursor: pointer;
+	color: black !important;
+	background-color: #bfb6b6 !important;
+	background-image: none !important;
+	background-position-x: 0 !important;
+	background-position-y: 0 !important;
+	border: 0 !important;
+	cursor: pointer !important;
+	margin: 0px !important;
 }
 
 .ui-menu-icons {

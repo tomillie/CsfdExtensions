@@ -24,8 +24,8 @@
             "matches": ["http://www.csfd.cz/film/*", "https://www.csfd.cz/film/*"]
         },
         {
-            "css": ["css/style-csfd.css"],
-            "js": ["js/libs/jquery.js", "js/extras/extras_tooltips.js", "js/libs/jquery.hoverIntent.minified.js", "js/other/helper.js", "js/enums/cache_type.js"],
+            "css": ["css/style-csfd.css", "css/autocomplete.css"],
+            "js": ["js/libs/jquery.js", "js/libs/jquery-ui.js", "js/libs/jquery.hoverIntent.minified.js", "js/extras/extras_tooltips.js", "js/other/helper.js", "js/other/autocomplete.js", "js/enums/cache_type.js"],
             "matches": ["http://www.csfd.cz/*", "https://www.csfd.cz/*"]
         },
         {
