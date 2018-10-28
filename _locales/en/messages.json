@@ -76,6 +76,10 @@
 		"message": "User data export",
 		"description": "User data export feature name."
 	},
+	"opt_search_autocomplete": {
+		"message": "Search autocomplete",
+		"description": "Search autocomplete feature name."
+	},
 	"opt_save": {
 		"message": "Save options",
 		"description": "Save options button name."
@@ -92,5 +96,5 @@
 		"message": "Saved",
 		"description": "Message after saving the settings."
 	}
-	
+
 }

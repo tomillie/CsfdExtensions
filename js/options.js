@@ -11,7 +11,8 @@ var settings = ["imdbRating",
     "csfdLink",
     "artistTooltip",
     "movieTooltip",
-    "exportUserData"
+    "exportUserData",
+    "searchAutocomplete"
 ];
 
 // runs restore_option() before page load

@@ -23,6 +23,7 @@ function iso8601TimeToHMS(s) {
     return (minutes < 10 ? '0' + minutes : minutes) + ":" + (seconds < 10 ? '0' + seconds : seconds);
 }
 
+
 /**
  * Translates each language from english to czech.
  *
@@ -151,6 +152,7 @@ function transalteOriginalLanguage(language) {
     return language;
 }
 
+
 /**
  * Stores an object to the cache.
  *
@@ -194,6 +196,7 @@ function storeToCache(type, data, id) {
 
     return dfrd.promise();
 }
+
 
 /**
  * Retrieves movies or artists from a storage cache if they exist.
@@ -240,6 +243,7 @@ function retrieveFromCache(type, id) {
     return dfrd.promise();
 }
 
+
 /**
  * Updates an object with a new object comparing their properties.
  * If the property is null, nothing is updated, otherwise it is.
@@ -263,6 +267,7 @@ function updateOldObject(oldObject, newObject) {
     return updatedObject;
 }
 
+
 /**
  * Creates an artist object for further use (a constructor).
  *
@@ -279,6 +284,7 @@ function normalizeArtistObject(tooltipContent, timestamp) {
 
     return normalizedObject;
 }
+
 
 /**
  * Creates a movie object for further use (a constructor).
@@ -305,6 +311,7 @@ function normalizeMovieObject(movieInfo, tooltipContent, youtubeVideo, isTVShow,
     return normalizedObject;
 }
 
+
 /**
  * Creates a movieInfo object for further use (a constructor).
  *
@@ -326,6 +333,7 @@ function normalizeMovieInfoObject(title, imdbRating, yearEnd, language) {
     return normalizedObject;
 }
 
+
 /**
  * Creates a youtubeVideo object for further use (a constructor).
  *
@@ -343,6 +351,24 @@ function normalizeYouTubeVideoObject(id, duration) {
     return normalizedObject;
 }
 
+
+/**
+ * Reads chrome.storage.local asynchronously.
+ * @param {string or an array of strings} key Keys to identify the item(s) to be retrieved from storage
+ */
+function readStorageAsync(key) {
+    return new Promise((resolve, reject) => {
+        if (key != null) {
+            chrome.storage.local.get(key, function (result) {
+                resolve(result);
+            });
+        } else {
+            reject(null);
+        }
+    });
+}
+
+
 /**
  * Gets CSFD ID of the movie or artist from CSFD url.
  *
@@ -353,6 +379,7 @@ function getCsfdIdFromUrl(url) {
 
     return url.match(/\d+/)[0];
 }
+
 
 /**
  * Checks if the provided timestamp is older than a month.
@@ -368,6 +395,7 @@ function isOlderThanMonth(timestamp) {
     return currentTimestamp - timestamp > monthInMiliseconds;
 }
 
+
 /**
  * Decodes a string with special HTML characters (e.g.: single qoute (') as &#x27;).
  *
@@ -380,6 +408,21 @@ function decodeEntities(encodedString) {
 
     return div.textContent;
 }
+
+
+/**
+ * Decodes a string which consists of some special HTML characters (such as &#39;)
+ * @param  string html String with HTML characters
+ * @return string      String without HTML characters
+ */
+function decodeHtml(html) {
+
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+
+    return txt.value;
+}
+
 
 /**
  * Prints all chrome.storage.local data into console (might be useful during debug).

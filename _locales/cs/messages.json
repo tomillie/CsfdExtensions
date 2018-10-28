@@ -59,6 +59,9 @@
 	"opt_data_export": {
 		"message": "Export uživatelských dat"
 	},
+	"opt_search_autocomplete": {
+		"message": "Automatické doplňování vyhledávání"
+	},
 	"opt_save": {
 		"message": "Uložit"
 	},

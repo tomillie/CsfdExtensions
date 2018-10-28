@@ -8,7 +8,7 @@
 	"button_search": {
 		"message": "Hľadaj"
 	},
-	
+
 	"common_new_version_installed": {
 		"message": "Nová verzia úspešne nainštalovaná."
 	},
@@ -57,6 +57,9 @@
 	},
 	"opt_data_export": {
 		"message": "Export užívateľských dát"
+	},
+	"opt_search_autocomplete": {
+		"message": "Automatické doplňovanie vyhľadávania"
 	},
 	"opt_save": {
 		"message": "Uložiť"
