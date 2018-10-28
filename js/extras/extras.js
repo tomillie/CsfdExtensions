@@ -318,9 +318,6 @@ chrome.storage.local.get(keys, function(result) {
             $("#page-header").before('<a name="#top"></a><a href="#top" class="go_up"><img src="' + chrome.extension.getURL("img/up.png") + '"></a>');
         }
 
-        // REMOVE SOME ADS
-        $("#ad-wrapper").remove();
-
     }
 
 });

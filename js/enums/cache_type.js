@@ -1,4 +1,4 @@
 CacheType = {
-	ARTIST : 0,
-	MOVIE : 1
+    ARTIST : 0,
+    MOVIE : 1
 }
