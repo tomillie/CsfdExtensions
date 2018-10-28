@@ -11,15 +11,6 @@ $(document).ready(function() {
             // CSFD LINK
             if (valCsfd == "1" || valCsfd == null) {
 
-                var ProfileType = {
-                    FILM: 1,
-                    CREATOR: 2,
-                    properties: {
-                        1: { urlParam: "film" },
-                        2: { urlParam: "creator" }
-                      }
-                };
-
                 var current_url = window.location.href;
                 var profile_type = null;
                 var imdb_id = "";

@@ -38,7 +38,7 @@
         },
         {
             "css": ["css/style-imdb.css"],
-            "js": ["js/libs/jquery.js", "js/extras/extras_imdb.js"],
+            "js": ["js/libs/jquery.js", "js/extras/extras_imdb.js", "js/enums/profile_type.js"],
             "matches": ["http://www.imdb.com/*", "https://www.imdb.com/*"]
         }
     ],
