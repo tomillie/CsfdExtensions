@@ -193,11 +193,21 @@ chrome.storage.local.get(keys, function(result) {
                 let apiUrl = `https://www.googleapis.com/youtube/v3/search?q=${titleDecoded} trailer&part=snippet&maxResults=1&order=relevance&type=video&videoEmbeddable=true&key=${developerKey}`
                 fetchAPI(apiUrl)
                     .then(function(response) {
+
+                        if (response.error) {
+                            return;
+                        }
+
                         var youtubeTrailerId = response.items[0].id.videoId;
                         apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${youtubeTrailerId}&key=${developerKey}`;
 
                         fetchAPI(apiUrl)
                             .then(function(response) {
+
+                                if (response.error) {
+                                    return;
+                                }
+
                                 // duration of the youtube video
                                 var youtubeTrailerDuration = response.items[0].contentDetails.duration;
                                 youtubeTrailerDuration = iso8601TimeToHMS(youtubeTrailerDuration);
