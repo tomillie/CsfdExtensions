@@ -48,49 +48,43 @@ chrome.storage.local.get(keys, function(result) {
                 imdbId = imdbId[imdbId.length - 1];
             }
 
-            var apiKey = "582BD8F699A9666AF3B8431E5B624";
-            var apiUrl = "https://imdbapi.tomizzi.com/api.php?id=" + imdbId + "&api_key=" + apiKey;
+            let apiKey = "582BD8F699A9666AF3B8431E5B624";
+            let apiUrl = "https://imdbapi.tomizzi.com/api.php?id=" + imdbId + "&api_key=" + apiKey;
+            var imdbLinkPretty = imdbLink.replace('combined', '');
+
+            // check the cache
+            $.when(retrieveFromCache(CacheType.MOVIE, getCsfdIdFromUrl(currentUrl))).then(function(result) {
+                cache = result;
+                if (typeof cache != 'undefined' && cache != null && cache.movieInfo != null) {
+                    title = cache.movieInfo.title;
+                    imdbRating = cache.movieInfo.imdbRating;
+                    yearEnd = cache.movieInfo.yearEnd;
+                    language = cache.movieInfo.language;
+
+                    // display features
+                    addFeatures();
+                } else {
+                    fetchAPI(apiUrl)
+                        .then(function(response) {
+                            title = response.Title;
+                            imdbRating = response.Rating ? response.Rating : "N/A";
+                            yearEnd = response.YearEnd;
+                            language = response.Language;
+
+                            // display features
+                            addFeatures();
+
+                            // store to the cache
+                            var movieInfo = normalizeMovieInfoObject(title, imdbRating, yearEnd, language);
+                            storeToCache(CacheType.MOVIE, normalizeMovieObject(movieInfo, null, null, null, null, $.now()), getCsfdIdFromUrl(currentUrl));
+                        });
+                }
+            });
         }
-        var imdbLinkPretty = imdbLink.replace('combined', '');
-
-        // check the cache
-        $.when(retrieveFromCache(CacheType.MOVIE, getCsfdIdFromUrl(currentUrl))).then(function(result) {
-            cache = result;
-            if (typeof cache != 'undefined' && cache != null && cache.movieInfo != null) {
-                title = cache.movieInfo.title;
-                imdbRating = cache.movieInfo.imdbRating;
-                yearEnd = cache.movieInfo.yearEnd;
-                language = cache.movieInfo.language;
-
-                // display features
-                addFeatures();
-            } else {
-                // not cached yet
-                $.ajax({
-                    'async': true,
-                    'global': false,
-                    'url': apiUrl,
-                    'dataType': "json",
-                    'success': function(data) {
-                        title = data.Title;
-                        data.Rating ? imdbRating = data.Rating : imdbRating = "N/A";
-                        yearEnd = data.YearEnd;
-                        language = data.Language;
-
-                        // display features
-                        addFeatures();
-
-                        // store to the cache
-                        var movieInfo = normalizeMovieInfoObject(title, imdbRating, yearEnd, language);
-                        storeToCache(CacheType.MOVIE, normalizeMovieObject(movieInfo, null, null, null, null, $.now()), getCsfdIdFromUrl(currentUrl));
-                    }
-                });
-            }
-        });
     }
 
 
-    /**
+        /**
      * Adds features to the CSFD website, such as IMDB rating, favourite users rating,
      * orignal language, YouTube trailer, go-up link, year end and episodes of a TV show.
      */
@@ -196,26 +190,16 @@ chrome.storage.local.get(keys, function(result) {
                 // place the video on the page
                 placeVideoOnPage(cache.youtubeVideo.id, cache.youtubeVideo.duration);
             } else {
-                var jsonYoutube = null;
-                $.ajax({
-                    'async': true,
-                    'global': false,
-                    'url': 'https://www.googleapis.com/youtube/v3/search?q=' + titleDecoded + ' trailer' +
-                        '&part=snippet&maxResults=1&order=relevance&type=video&videoEmbeddable=true&key=' + developerKey,
-                    'dataType': "json",
-                    'success': function(data) {
-                        // id of the youtube video
-                        var youtubeTrailerId = data.items[0].id.videoId;
+                let apiUrl = `https://www.googleapis.com/youtube/v3/search?q=${titleDecoded} trailer&part=snippet&maxResults=1&order=relevance&type=video&videoEmbeddable=true&key=${developerKey}`
+                fetchAPI(apiUrl)
+                    .then(function(response) {
+                        var youtubeTrailerId = response.items[0].id.videoId;
+                        apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${youtubeTrailerId}&key=${developerKey}`;
 
-                        // youtube video info
-                        $.ajax({
-                            'async': true,
-                            'global': false,
-                            'url': 'https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=' + youtubeTrailerId + '&key=' + developerKey,
-                            'dataType': "json",
-                            'success': function(info) {
+                        fetchAPI(apiUrl)
+                            .then(function(response) {
                                 // duration of the youtube video
-                                var youtubeTrailerDuration = info.items[0].contentDetails.duration;
+                                var youtubeTrailerDuration = response.items[0].contentDetails.duration;
                                 youtubeTrailerDuration = iso8601TimeToHMS(youtubeTrailerDuration);
 
                                 // place the video on the page
@@ -224,10 +208,8 @@ chrome.storage.local.get(keys, function(result) {
                                 // store to the cache
                                 var youtubeVideo = normalizeYouTubeVideoObject(youtubeTrailerId, youtubeTrailerDuration);
                                 storeToCache(CacheType.MOVIE, normalizeMovieObject(null, null, youtubeVideo, null, null, $.now()), getCsfdIdFromUrl(currentUrl));
-                            }
-                        });
-                    }
-                });
+                            });
+                    });
             }
 
             /**
@@ -257,59 +239,61 @@ chrome.storage.local.get(keys, function(result) {
         // TORRENT AND SUBTITLES DOWNLOAD
         if (valTorrent == "1" || valTorrent == null || valSubtitle == "1" || valSubtitle == null) {
 
-            var links_url = "https://chrome.tomizzi.com/csfd-extension-links.json";
+            let apiUrl = "https://chrome.tomizzi.com/csfd-extension-links.json";
             var cc_names = [];
             var cc_urls = [];
             var torrent_names = [];
             var torrent_urls = [];
 
-            $.getJSON(links_url, function(json_data) {
-                $.each(json_data.links, function(index, element) {
-                    if (element.type == "cc") {
-                        cc_names.push(element.name);
-                        cc_urls.push(element.url);
-                    } else if (element.type == "torrent") {
-                        torrent_names.push(element.name);
-                        torrent_urls.push(element.url);
+            fetchAPI(apiUrl)
+                .then(function(response) {
+
+                    $.each(response.links, function(_index, element) {
+                        if (element.type == "cc") {
+                            cc_names.push(element.name);
+                            cc_urls.push(element.url);
+                        } else if (element.type == "torrent") {
+                            torrent_names.push(element.name);
+                            torrent_urls.push(element.url);
+                        }
+                    });
+
+                    // SUBTITLES
+                    var cc = '<div id="share">' +
+                        '<ul class="ext">' +
+                        '<li><img src="' + chrome.extension.getURL("img/cc.gif") + '"></li>';
+
+                    for (var i = 0; i < cc_names.length; ++i) {
+                        cc_urls[i] = cc_urls[i].replace('%%QUERY%%', title)
+                        cc += '<li><a href="' + cc_urls[i] + '">' + cc_names[i] + '</a></li>';
+                    }
+
+                    cc += '</ul>' +
+                        '<div class="clear"></div>' +
+                        '</div>';
+
+                    if (valSubtitle == "1" || valSubtitle == null) {
+                        $("#share").after(cc);
+                    }
+
+                    // TORRENTS
+                    var torrent = '<div id="share">' +
+                        '<ul class="ext">' +
+                        '<li><img src="' + chrome.extension.getURL("img/utorrent.jpg") + '"></li>';
+
+                    for (var i = 0; i < torrent_names.length; ++i) {
+                        torrent_urls[i] = torrent_urls[i].replace('%%QUERY%%', title)
+                        torrent += '<li><a href="' + torrent_urls[i] + '">' + torrent_names[i] + '</a></li>';
+                    }
+
+                    torrent += '</ul>' +
+                        '<div class="clear"></div>' +
+                        '</div>';
+
+                    if (valTorrent == "1" || valTorrent == null) {
+                        $("#share").after(torrent);
                     }
                 });
-
-                // SUBTITLES
-                var cc = '<div id="share">' +
-                    '<ul class="ext">' +
-                    '<li><img src="' + chrome.extension.getURL("img/cc.gif") + '"></li>';
-
-                for (var i = 0; i < cc_names.length; ++i) {
-                    cc_urls[i] = cc_urls[i].replace('%%QUERY%%', title)
-                    cc += '<li><a href="' + cc_urls[i] + '">' + cc_names[i] + '</a></li>';
-                }
-
-                cc += '</ul>' +
-                    '<div class="clear"></div>' +
-                    '</div>';
-
-                if (valSubtitle == "1" || valSubtitle == null) {
-                    $("#share").after(cc);
-                }
-
-                // TORRENTS
-                var torrent = '<div id="share">' +
-                    '<ul class="ext">' +
-                    '<li><img src="' + chrome.extension.getURL("img/utorrent.jpg") + '"></li>';
-
-                for (var i = 0; i < torrent_names.length; ++i) {
-                    torrent_urls[i] = torrent_urls[i].replace('%%QUERY%%', title)
-                    torrent += '<li><a href="' + torrent_urls[i] + '">' + torrent_names[i] + '</a></li>';
-                }
-
-                torrent += '</ul>' +
-                    '<div class="clear"></div>' +
-                    '</div>';
-
-                if (valTorrent == "1" || valTorrent == null) {
-                    $("#share").after(torrent);
-                }
-            });
 
         }
 

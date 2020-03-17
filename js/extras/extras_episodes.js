@@ -6,21 +6,15 @@
  */
 function getEpisodes(title, csfdId) {
 
-    var api_url = "https://api.tvmaze.com/singlesearch/shows?q=" + title + "&embed=episodes";
-    var episodes;
+    let apiUrl = "https://api.tvmaze.com/singlesearch/shows?q=" + title + "&embed=episodes";
+    let episodes;
 
-    $.ajax({
-        'async': true,
-        'global': false,
-        'url': api_url,
-        'dataType': "json",
-        'success': function(data) {
-            episodes = data._embedded.episodes;
+    fetchAPI(apiUrl)
+        .then(function(response) {
+            episodes = response._embedded.episodes;
             printEpisodes(episodes);
             storeToCache(CacheType.MOVIE, normalizeMovieObject(null, null, null, true, episodes, $.now()), csfdId);
-        }
-    });
-
+        });
 }
 
 /**
